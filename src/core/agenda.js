@@ -1,5 +1,3 @@
-import { TestSchema } from '../models/test';
-
 const Agenda = require('agenda');
 require('dotenv').config();
 const mongoConnection = process.env.MONGO_URL;

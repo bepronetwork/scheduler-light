@@ -11,6 +11,5 @@ app.get('/', function (req, res) {
 
 app.listen(PORT, async () => {
   await DatabaseSingleton.start();
-  const agenda = require("./src/core/agenda.js")
-  agenda.AgendaSingleton.start();
+  require("./src/core/agenda.js").AgendaSingleton.start();
 });
