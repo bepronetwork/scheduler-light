@@ -1,14 +1,13 @@
-import { AppRepository } from '../repos/app';
-import { AppSchema } from '../schemas/app';
-import { TestSchema } from '../schemas/test';
 import { AppLogic } from '../logic/app';
 
 const Agenda = require('agenda');
 require('dotenv').config();
-const mongoConnection = process.env.MONGO_URL;
+const mongoConnection               = process.env.MONGO_URL;
+const time                          = process.env.TIME;
+const mongoConnectionDatabaseRedis  = process.env.REDIS;
 const agenda = new Agenda({
     db: {
-        address: mongoConnection + "redis?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true",
+        address: mongoConnection + mongoConnectionDatabaseRedis,
         options: {
             useNewUrlParser: true, useUnifiedTopology: true
         },
@@ -18,7 +17,7 @@ class AgendaCore {
 
     constructor(){}
     start() {
-        agenda.define('test', async job => {
+        agenda.define('time', async job => {
             console.log("Begin");
             await Promise.all([
                 AppLogic.registerLastBet(),
@@ -29,7 +28,7 @@ class AgendaCore {
         });
         (async function() {
             await agenda.start();
-            await agenda.every('10 minutes', 'test');
+            await agenda.every(`${time} minutes`, 'time');
         })();
     }
 }
