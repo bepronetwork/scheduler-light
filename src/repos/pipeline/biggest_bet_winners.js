@@ -114,6 +114,6 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
     {
         '$limit': size
     }
-  ];
+];
 
 export default pipeline_biggest_bet_winners;
