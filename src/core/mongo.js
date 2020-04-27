@@ -7,13 +7,13 @@ const mongoConnectionDatabaseMain = process.env.MAIN;
 class database {
     async start() {
         this.connectRedis = new Mongoose();
-        // this.connectRedis.set('useFindAndModify', false);
+        this.connectRedis.set('useFindAndModify', false);
         await this.connectRedis.connect(mongoConnectionString + mongoConnectionDatabaseRedis, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
         this.connectMain = new Mongoose();
-        // this.connectMain.set('useFindAndModify', false);
+        this.connectMain.set('useFindAndModify', false);
         await this.connectMain.connect(mongoConnectionString + mongoConnectionDatabaseMain, {
             useNewUrlParser: true,
             useUnifiedTopology: true
