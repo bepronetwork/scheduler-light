@@ -18,8 +18,8 @@ class AgendaCore {
         agenda.define('time', async job => {
             console.log("Begin");
             await AppLogic.registerLastBet();
-            await AppLogic.registerBiggestBetWinner();
-            await AppLogic.registerBiggestUserWinner();
+            // await AppLogic.registerBiggestBetWinner();
+            // await AppLogic.registerBiggestUserWinner();
             console.log("End");
         });
         (async function() {
