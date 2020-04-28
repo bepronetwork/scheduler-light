@@ -1,7 +1,20 @@
 import { AppSchema } from "../schemas/app";
+import Progress from "./utils/progress";
 export default class Logic {
-    async buildLogicRegisterPerSkip(functionToProcess) {
+
+    constructor(queue){
+        this.queue = queue;
+    }
+    async buildLogicRegisterPerSkip(functionToProcess, type) {
+        if(this.queue[type]) {
+            return false;
+        }
+        this.queue[type] = true;
         let index = -1;
+
+        let countProcess  = await AppSchema.prototype.model.find({}).count();
+        let processObj    = new Progress(countProcess, "Process");
+
         while(true) {
             index++;
             let apps =  await AppSchema.prototype.model
@@ -14,8 +27,13 @@ export default class Logic {
                 break;
             }
             for(let app of apps) {
+                processObj.setProcess((--countProcess));
                 await functionToProcess(app._id);
             }
         }
+        processObj.destroyProgress();
+        processObj = null;
+        this.queue[type] = false;
+        return true;
     }
 }
