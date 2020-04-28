@@ -13,7 +13,7 @@ export default class Logic {
         let index = -1;
 
         let countProcess  = await AppSchema.prototype.model.find({}).count();
-        let processObj    = new Progress(countProcess, "Process");
+        let processObj    = new Progress(countProcess, type);
 
         while(true) {
             index++;
