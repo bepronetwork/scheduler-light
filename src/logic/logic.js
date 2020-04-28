@@ -10,7 +10,7 @@ export default class Logic {
             return false;
         }
         this.queue[type] = true;
-        let index = 999;
+        let index = 0;
 
         let countProcess  = await AppSchema.prototype.model.count();
         let processObj    = new Progress(countProcess, type);
