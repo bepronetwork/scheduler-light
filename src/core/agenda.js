@@ -18,8 +18,8 @@ class AgendaCore {
         // agenda.define('time', { lockLifetime : 10000 }, async (job, done) => {
             console.log("Begin");
             // Promise.all([
-                AppLogic.registerLastBet();
-            //     AppLogic.registerBiggestBetWinner(),
+                // AppLogic.registerLastBet();
+                AppLogic.registerBiggestBetWinner(),
             //     AppLogic.registerBiggestUserWinner()
             // ]).then(()=>{
             //     // done();
