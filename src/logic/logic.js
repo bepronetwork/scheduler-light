@@ -22,13 +22,13 @@ export default class Logic {
                         .skip(1000*index)
                         .sort({_id:-1})
                         .limit(1000)
-                        .select("_id");
+                        .select("_id games");
             if(apps.length === 0){
                 break;
             }
             for(let app of apps) {
                 processObj.setProcess((--countProcess));
-                await functionToProcess(app._id);
+                await functionToProcess(app);
             }
         }
         processObj.destroyProgress();

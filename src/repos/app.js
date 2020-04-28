@@ -18,10 +18,10 @@ class App {
         });
     }
 
-    lastsBets(_id) {
+    lastsBets(_id, game) {
         return new Promise( (resolve, reject) => {
             BetSchema.prototype.model
-            .aggregate(pipeline_last_bets(_id, { offset: 0, size: 50}))
+            .aggregate(pipeline_last_bets(_id, game, { offset: 0, size: 50}))
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
@@ -51,13 +51,14 @@ class App {
         });
     }
 
-    insertLastsBets(_id, data) {
+    insertLastsBets(_id, data, game) {
         return new Promise( (resolve, reject) => {
             LastBetsSchema.prototype.model
-            .findOneAndUpdate({app: _id},
+            .findOneAndUpdate({app: _id, game},
                 {
                     $set: {
                         app         : _id,
+                        game,
                         timestamp   : new Date(),
                         lastBets    : data
                     }

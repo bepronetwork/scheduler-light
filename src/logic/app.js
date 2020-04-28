@@ -9,8 +9,14 @@ class App extends Logic {
     async registerLastBet() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.lastsBets(app);
-                await AppRepository.insertLastsBets(app, result);
+                const result = await AppRepository.lastsBets(app._id, null);
+                await AppRepository.insertLastsBets(app._id, result);
+
+                for(let game of app.games){
+                    const resultGame = await AppRepository.lastsBets(app, game);
+                    await AppRepository.insertLastsBets(app, resultGame);
+                }
+
                 resolve(true);
             }, "registerLastBet");
         });
@@ -18,8 +24,8 @@ class App extends Logic {
     async registerBiggestUserWinner() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.biggestBetUserWinners(app);
-                await AppRepository.insertBiggestBetUserWinners(app, result);
+                const result = await AppRepository.biggestBetUserWinners(app._id);
+                await AppRepository.insertBiggestBetUserWinners(app._id, result);
                 resolve(true);
             }, "registerBiggestUserWinner");
         });
@@ -27,8 +33,8 @@ class App extends Logic {
     async registerBiggestBetWinner() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.biggestBetWinners(app);
-                await AppRepository.insertBiggestBetWinners(app, result);
+                const result = await AppRepository.biggestBetWinners(app._id);
+                await AppRepository.insertBiggestBetWinners(app._id, result);
                 resolve(true);
             }, "registerBiggestBetWinner");
         });

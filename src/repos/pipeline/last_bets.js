@@ -1,12 +1,24 @@
 import mongoose from 'mongoose';
 
-const pipeline_last_bets = (_id, { offset, size }) =>
+
+const pipelineGame = (game)=>{
+  if(game==null) return {};
+  return {
+    '$match': {
+      'game': typeof game =='string' ? mongoose.Types.ObjectId(game) : game
+    }
+  };
+}
+
+const pipeline_last_bets = (_id, game, { offset, size }) =>
 [
   {
     '$match': {
-      'app': mongoose.Types.ObjectId(_id)
+      'app': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
     }
-  }, {
+  },
+  ...pipelineGame(game),
+  {
     '$sort': {
       'timestamp': -1
     }
