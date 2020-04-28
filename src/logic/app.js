@@ -30,7 +30,7 @@ class App extends Logic {
                 const result = await AppRepository.biggestBetWinners(app);
                 await AppRepository.insertBiggestBetWinners(app, result);
                 resolve(true);
-            }, "registerBiggestUserWinner");
+            }, "registerBiggestBetWinner");
         });
     }
 }

@@ -3,10 +3,10 @@ export default class Progress {
         this.progress = value;
         this.name     = name;
         this.objProgress = setInterval(()=>{
-          console.clear();
+        //   console.clear();
           console.log(this.name);
           console.log(`${this.progress} process left`);
-        }, 2000);
+        }, 10000);
     }
     setProcess(value) {
         this.progress = value;
