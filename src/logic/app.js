@@ -9,12 +9,12 @@ class App extends Logic {
     async registerLastBet() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.lastsBets(app._id, null);
-                await AppRepository.insertLastsBets(app._id, result);
+                const result = await AppRepository.lastsBets(app._id.toString(), null);
+                await AppRepository.insertLastsBets(app._id.toString(), result);
 
                 for(let game of app.games){
-                    const resultGame = await AppRepository.lastsBets(app, game);
-                    await AppRepository.insertLastsBets(app, resultGame);
+                    const resultGame = await AppRepository.lastsBets(app._id.toString(), game._id.toString());
+                    await AppRepository.insertLastsBets(app._id.toString(), resultGame, game);
                 }
 
                 resolve(true);
