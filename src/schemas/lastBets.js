@@ -18,7 +18,7 @@ LastBetsSchema.prototype.schema = {
             timestamp : { type : Date, required : true},
         },
         currency    : {
-            _id       : { type : String, required: true},
+            _id       : { type: String, required: true},
             ticker    : { type: String, required: true},
             name      : { type: String, required: true},
             image     : { type: String, required: true},
