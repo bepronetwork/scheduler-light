@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
-const pipeline_last_bets = (_id, { offset, size }) => 
-
+const pipeline_last_bets = (_id, { offset, size }) =>
 [
     {
       '$match': {

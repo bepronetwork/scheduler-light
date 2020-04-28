@@ -19,8 +19,8 @@ class AgendaCore {
             console.log("Begin");
             // Promise.all([
                 // AppLogic.registerLastBet();
-                AppLogic.registerBiggestBetWinner();
-            //     AppLogic.registerBiggestUserWinner()
+                // AppLogic.registerBiggestBetWinner();
+                AppLogic.registerBiggestUserWinner();
             // ]).then(()=>{
             //     // done();
             // // });
