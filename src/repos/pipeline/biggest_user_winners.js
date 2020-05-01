@@ -147,9 +147,6 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
     }
   },
   {
-    '$skip': offset
-  },
-  {
       '$limit': size
   }
 ]

@@ -109,9 +109,6 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
       }
     },
     {
-        '$skip': offset
-    },
-    {
         '$limit': size
     }
 ];

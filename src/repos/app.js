@@ -8,16 +8,6 @@ import { BetSchema } from "../schemas/bet";
 
 class App {
 
-    getAllApps() {
-        return new Promise((resolve, reject)=>{
-            AppSchema.prototype.model.find()
-            .exec((item, err)=>{
-                if(err) reject(err);
-                resolve(item);
-            });
-        });
-    }
-
     lastsBets(_id, game) {
         return new Promise( (resolve, reject) => {
             BetSchema.prototype.model

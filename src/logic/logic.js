@@ -19,9 +19,8 @@ export default class Logic {
             index++;
             let apps =  await AppSchema.prototype.model
                         .find()
-                        .skip(1000*index)
-                        .sort({_id:-1})
-                        .limit(1000)
+                        .skip(200*index)
+                        .limit(200)
                         .select("_id games");
             if(apps.length === 0){
                 break;
