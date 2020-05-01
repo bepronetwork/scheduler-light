@@ -15,7 +15,7 @@ const agenda = new Agenda({
 });
 class AgendaCore {
     start() {
-        agenda.define('time', { lockLifetime : 10000 }, async (job, done) => {
+        agenda.define('time', async (job, done) => {
             console.log("Begin");
             Promise.all([
                 AppLogic.registerLastBet(),
