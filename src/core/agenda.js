@@ -17,11 +17,9 @@ class AgendaCore {
     start() {
         agenda.define('time', async (job, done) => {
             console.log("Begin");
-            Promise.all([
-                AppLogic.registerLastBet(),
-                AppLogic.registerBiggestBetWinner(),
-                AppLogic.registerBiggestUserWinner()
-            ]);
+            AppLogic.registerLastBet();
+            AppLogic.registerBiggestBetWinner();
+            AppLogic.registerBiggestUserWinner();
         });
         (async function() {
             await agenda.start();
