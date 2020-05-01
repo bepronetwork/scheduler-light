@@ -4,7 +4,7 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
 [
     {
       '$match': {
-        '_id': mongoose.Types.ObjectId(_id)
+        '_id': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
       }
     }, {
       '$lookup': {
@@ -109,11 +109,8 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
       }
     },
     {
-        '$skip': offset
-    },
-    {
         '$limit': size
     }
-  ];
+];
 
 export default pipeline_biggest_bet_winners;

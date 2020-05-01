@@ -3,13 +3,14 @@ require('dotenv').config();
 
 const PORT = process.env.PORT;
 const app = express();
-import { DatabaseSingleton } from "./src/core/mongo";
+import { DatabaseSingleton } from "../src/core/mongo";
 
 app.get('/', function (req, res) {
   res.send('Success!!!');
 });
 
 app.listen(PORT, async () => {
+  console.log(`express  port ${PORT}`);
   await DatabaseSingleton.start();
-  require("./src/core/agenda.js").AgendaSingleton.start();
+  require("../src/core/agenda.js").AgendaSingleton.start();
 });

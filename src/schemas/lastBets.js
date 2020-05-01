@@ -6,9 +6,11 @@ class LastBetsSchema{};
 
 LastBetsSchema.prototype.name = 'LastBets';
 
+
 LastBetsSchema.prototype.schema = {
     app         : { type : mongoose.Schema.Types.ObjectId, ref: 'App', required : true },
     timestamp   : { type : Date, required : true},
+    game        : { type : mongoose.Schema.Types.ObjectId, ref: 'Game', required : true },
     lastBets    : [{
         bet         : {
             _id       : { type : String, required: true},
@@ -18,7 +20,7 @@ LastBetsSchema.prototype.schema = {
             timestamp : { type : Date, required : true},
         },
         currency    : {
-            _id       : { type : String, required: true},
+            _id       : { type: String, required: true},
             ticker    : { type: String, required: true},
             name      : { type: String, required: true},
             image     : { type: String, required: true},

@@ -3,24 +3,15 @@ import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_la
 import { LastBetsSchema } from "../schemas/lastBets";
 import { BiggestUserWinnerSchema } from "../schemas/biggestUserWinner";
 import { BiggestBetWinnerSchema } from "../schemas/biggestBetWinners";
+import { BetSchema } from "../schemas/bet";
 
 
 class App {
 
-    getAllApps() {
-        return new Promise((resolve, reject)=>{
-            AppSchema.prototype.model.find()
-            .exec((item, err)=>{
-                if(err) reject(err);
-                resolve(item);
-            });
-        });
-    }
-
-    lastsBets(_id) {
+    lastsBets(_id, game) {
         return new Promise( (resolve, reject) => {
-            AppSchema.prototype.model
-            .aggregate(pipeline_last_bets(_id, { offset: 0, size: 200}))
+            BetSchema.prototype.model
+            .aggregate(pipeline_last_bets(_id, game, { offset: 0, size: 50}))
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
@@ -50,13 +41,14 @@ class App {
         });
     }
 
-    insertLastsBets(_id, data) {
+    insertLastsBets(_id, data, game) {
         return new Promise( (resolve, reject) => {
             LastBetsSchema.prototype.model
-            .findOneAndUpdate({app: _id},
+            .findOneAndUpdate({app: _id, game},
                 {
                     $set: {
                         app         : _id,
+                        game,
                         timestamp   : new Date(),
                         lastBets    : data
                     }

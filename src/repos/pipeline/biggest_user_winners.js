@@ -4,7 +4,7 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
 [
   {
     '$match': {
-      '_id': mongoose.Types.ObjectId(_id)
+      '_id': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
     }
   }, {
     '$lookup': {
@@ -145,9 +145,6 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
     '$sort': {
       'winAmount': -1
     }
-  },
-  {
-    '$skip': offset
   },
   {
       '$limit': size
