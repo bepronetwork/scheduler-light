@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 
 const pipelineGame = (game)=>{
   if(game==null) return {};
-  return {
+  return [{
     '$match': {
       'game': typeof game =='string' ? mongoose.Types.ObjectId(game) : game
     }
-  };
+  }];
 }
 
 const pipeline_last_bets = (_id, game, { offset, size }) =>
