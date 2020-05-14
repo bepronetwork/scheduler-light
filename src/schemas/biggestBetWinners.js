@@ -9,6 +9,7 @@ BiggestBetWinnerSchema.prototype.name = 'BiggestBetWinner';
 BiggestBetWinnerSchema.prototype.schema = {
     app         : { type : mongoose.Schema.Types.ObjectId, ref: 'App', required : true },
     timestamp   : { type : Date, required : true},
+    game        : { type : mongoose.Schema.Types.ObjectId, ref: 'Game', required : true },
     biggestBetWinner: [{
         bet         : {
             _id       : { type : mongoose.Schema.Types.ObjectId, required: true},
