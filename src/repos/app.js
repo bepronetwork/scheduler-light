@@ -65,7 +65,7 @@ class App {
     insertBiggestBetWinners(_id, data, game=null) {
         return new Promise( (resolve, reject) => {
             BiggestBetWinnerSchema.prototype.model
-            .findOneAndUpdate({app: _id},
+            .findOneAndUpdate({app: _id, game},
                 {
                     $set: {
                         app                 : _id,
