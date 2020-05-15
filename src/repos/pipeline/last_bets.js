@@ -14,6 +14,11 @@ const pipeline_last_bets = (_id, game, { offset, size }) =>
 [
   {
     '$match': {
+      'isJackpot': false
+    }
+  },
+  {
+    '$match': {
       'app': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
     }
   },
