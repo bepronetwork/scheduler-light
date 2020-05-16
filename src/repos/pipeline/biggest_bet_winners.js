@@ -60,6 +60,10 @@ const pipeline_biggest_bet_winners = (_id, game, { offset, size }) =>
         }
       }
     }, {
+      '$match': {
+        'bet.isJackpot': false
+      }
+    }, {
       '$lookup': {
         'from': 'users', 
         'localField': 'bet.user', 
