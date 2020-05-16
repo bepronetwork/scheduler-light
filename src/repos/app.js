@@ -30,10 +30,10 @@ class App {
         });
     }
 
-    biggestBetWinners(_id) {
+    biggestBetWinners(_id, game) {
         return new Promise( (resolve, reject) => {
             AppSchema.prototype.model
-            .aggregate(pipeline_biggest_bet_winners(_id, { offset: 0, size: 200}))
+            .aggregate(pipeline_biggest_bet_winners(_id, game, { offset: 0, size: 200}))
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
@@ -62,15 +62,16 @@ class App {
         });
     }
 
-    insertBiggestBetUserWinners(_id, data) {
+    insertBiggestBetWinners(_id, data, game=null) {
         return new Promise( (resolve, reject) => {
-            BiggestUserWinnerSchema.prototype.model
-            .findOneAndUpdate({app: _id},
+            BiggestBetWinnerSchema.prototype.model
+            .findOneAndUpdate({app: _id, game},
                 {
                     $set: {
                         app                 : _id,
+                        game,
                         timestamp           : new Date(),
-                        biggestUserWinner   : data
+                        biggestBetWinner    : data
                     }
                 },
                 { upsert: true, new: true, setDefaultsOnInsert: true }
@@ -82,15 +83,15 @@ class App {
         });
     }
 
-    insertBiggestBetWinners(_id, data) {
+    insertBiggestBetUserWinners(_id, data) {
         return new Promise( (resolve, reject) => {
-            BiggestBetWinnerSchema.prototype.model
+            BiggestUserWinnerSchema.prototype.model
             .findOneAndUpdate({app: _id},
                 {
                     $set: {
                         app                 : _id,
                         timestamp           : new Date(),
-                        biggestBetWinner    : data
+                        biggestUserWinner   : data
                     }
                 },
                 { upsert: true, new: true, setDefaultsOnInsert: true }

@@ -46,6 +46,10 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
       }
     }
   }, {
+    '$match': {
+      'bet.isJackpot': false
+    }
+  }, {
     '$lookup': {
       'from': 'users', 
       'localField': 'bet.user', 

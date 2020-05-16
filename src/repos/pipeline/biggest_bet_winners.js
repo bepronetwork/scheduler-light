@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 
-const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
+const pipelineGame = (game)=>{
+  if(game==null) return {};
+  return [{
+    '$match': {
+      'game._id': typeof game =='string' ? mongoose.Types.ObjectId(game) : game
+    }
+  }];
+}
+
+const pipeline_biggest_bet_winners = (_id, game, { offset, size }) =>
 [
     {
       '$match': {
@@ -49,6 +58,10 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
             '$bet', 0
           ]
         }
+      }
+    }, {
+      '$match': {
+        'bet.isJackpot': false
       }
     }, {
       '$lookup': {
@@ -103,6 +116,7 @@ const pipeline_biggest_bet_winners = (_id, { offset, size }) =>
         }
       }
     },
+    ...pipelineGame(game),
     {
       '$sort': {
         'bet.winAmount': -1
