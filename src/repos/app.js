@@ -1,9 +1,10 @@
 import { AppSchema } from "../schemas/app";
-import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets} from "./pipeline"
+import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers} from "./pipeline"
 import { LastBetsSchema } from "../schemas/lastBets";
 import { BiggestUserWinnerSchema } from "../schemas/biggestUserWinner";
 import { BiggestBetWinnerSchema } from "../schemas/biggestBetWinners";
 import { BetSchema } from "../schemas/bet";
+import { PopularNumberSchema } from "../schemas/popularNumbers";
 
 
 class App {
@@ -22,7 +23,7 @@ class App {
     popularNumber(_id) {
         return new Promise( (resolve, reject) => {
             AppSchema.prototype.model
-            .aggregate(pipeline_popular_number(_id))
+            .aggregate(pipeline_popular_numbers(_id))
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
@@ -55,13 +56,13 @@ class App {
     insertPopularNumber(_id, data) {
         return new Promise( (resolve, reject) => {
             //To Do
-            Schema.prototype.model
+            PopularNumberSchema.prototype.model
             .findOneAndUpdate({app: _id},
                 {
                     $set: {
                         app                 : _id,
                         timestamp           : new Date(),
-                        popularNumber   : data
+                        popularNumbers      : data
                     }
                 },
                 { upsert: true, new: true, setDefaultsOnInsert: true }
