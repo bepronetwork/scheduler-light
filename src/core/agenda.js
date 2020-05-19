@@ -21,7 +21,8 @@ class AgendaCore {
             await Promise.all([
                 AppLogic.registerLastBet(),
                 AppLogic.registerBiggestBetWinner(),
-                AppLogic.registerBiggestUserWinner()
+                AppLogic.registerBiggestUserWinner(),
+                AppLogic.registerPopularNumber()
             ]);
         }, 1000 * 60 * time);
     }

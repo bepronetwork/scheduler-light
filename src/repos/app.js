@@ -19,6 +19,17 @@ class App {
         });
     }
 
+    popularNumber(_id) {
+        return new Promise( (resolve, reject) => {
+            AppSchema.prototype.model
+            .aggregate(pipeline_popular_number(_id))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
     biggestBetUserWinners(_id) {
         return new Promise( (resolve, reject) => {
             AppSchema.prototype.model
@@ -34,6 +45,27 @@ class App {
         return new Promise( (resolve, reject) => {
             AppSchema.prototype.model
             .aggregate(pipeline_biggest_bet_winners(_id, game, { offset: 0, size: 200}))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
+    insertPopularNumber(_id, data) {
+        return new Promise( (resolve, reject) => {
+            //To Do
+            Schema.prototype.model
+            .findOneAndUpdate({app: _id},
+                {
+                    $set: {
+                        app                 : _id,
+                        timestamp           : new Date(),
+                        popularNumber   : data
+                    }
+                },
+                { upsert: true, new: true, setDefaultsOnInsert: true }
+            )
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
