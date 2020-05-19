@@ -7,11 +7,15 @@ class App extends Logic {
     }
 
     async registerPopularNumber() {
-        return new Promise(async (resolve)=>{
+        return new Promise(async (resolve, reject)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.popularNumber(app._id);
-                await AppRepository.insertPopularNumber(app._id, result);
-                resolve(true);
+                try {
+                    const result = await AppRepository.popularNumber(app._id);
+                    await AppRepository.insertPopularNumber(app._id, result);
+                    resolve(true);
+                }catch(err){
+                    reject(err);
+                }
             }, "registerPopularNumber");
         });
     }
