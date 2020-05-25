@@ -15,16 +15,24 @@ const agenda = new Agenda({
 });
 class AgendaCore {
     start() {
-        setInterval(async ()=> {
-            console.log("Begin");
-            // has a queue control within each logic, that is, even if it calls the logic before it ends it ignores it and only starts again after it leaves the queue
-            await Promise.all([
-                AppLogic.registerLastBet(),
-                AppLogic.registerBiggestBetWinner(),
-                AppLogic.registerBiggestUserWinner(),
-                AppLogic.registerPopularNumber()
-            ]);
-        }, 1000 * 60 * time);
+        agenda.define('sunday', async job => {
+            AppLogic.generateBalance().then(async ()=>{
+                await agenda.schedule('sunday at 1:00am', 'sunday');
+            });
+        });
+
+        agenda.define('minutes', async job => {
+            AppLogic.registerLastBet();
+            AppLogic.registerBiggestBetWinner();
+            AppLogic.registerBiggestUserWinner();
+            AppLogic.registerPopularNumber();
+        });
+
+        (async function() {
+            await agenda.start();
+            await agenda.every(`${time} minutes`, 'minutes');
+            await agenda.schedule('sunday at 1:00am', 'sunday');
+        })();
     }
 }
 const AgendaSingleton = new AgendaCore();
