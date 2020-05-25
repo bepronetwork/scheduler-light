@@ -81,7 +81,6 @@ class App extends Logic {
                 });
                 if(result.length > 0) {
                     const link = await GoogleStorageSingleton.uploadFile({bucketName : 'balances-clients', file : result, name : `${app.name}-${nameCurrentDate()}-balances`});
-                    console.log(link);
                 }
             }, "generateBalance");
             resolve(true);

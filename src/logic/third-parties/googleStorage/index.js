@@ -44,7 +44,6 @@ class GoogleStorage{
 
             stringify(file, { header: true, columns: columns }, async (err, output) => {
                 fs.writeFileSync(`${path}${fileNameCSV}`, output, 'utf8');
-                console.log('>>>>>>>>>>>>>>>>>>>>>>>');
 
                 await this._streamCSVToCryptoAsync(fileNameCSV, fileNameCRYPTO);
 
