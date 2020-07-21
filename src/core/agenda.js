@@ -20,8 +20,11 @@ class AgendaCore {
             // has a queue control within each logic, that is, even if it calls the logic before it ends it ignores it and only starts again after it leaves the queue
             await Promise.all([
                 AppLogic.registerLastBet(),
+                AppLogic.registerLastBetsEsports(),
                 AppLogic.registerBiggestBetWinner(),
+                AppLogic.registerBiggestBetWinnerEsports(),
                 AppLogic.registerBiggestUserWinner(),
+                AppLogic.registerBiggestUserWinnerEsports(),
                 AppLogic.registerPopularNumber()
             ]);
         }, 1000 * 60 * time);

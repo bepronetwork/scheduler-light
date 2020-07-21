@@ -35,6 +35,17 @@ class App extends Logic {
             }, "registerLastBet");
         });
     }
+
+    async registerLastBetsEsports() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                const result = await AppRepository.lastBetsEsports(app._id.toString());
+                await AppRepository.insertLastBetsEsports(app._id.toString(), result);
+                resolve(true);
+            }, "registerLastBetEsports");
+        });
+    }
+
     async registerBiggestBetWinner() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
@@ -49,6 +60,16 @@ class App extends Logic {
         });
     }
 
+    async registerBiggestBetWinnerEsports() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                const result = await AppRepository.biggestBetWinnersEsports(app._id);
+                await AppRepository.insertBiggestBetWinnersEsports(app._id, result);
+                resolve(true);
+            }, "registerBiggestBetWinnerEsports");
+        });
+    }
+
     async registerBiggestUserWinner() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
@@ -58,13 +79,26 @@ class App extends Logic {
             }, "registerBiggestUserWinner");
         });
     }
+
+    async registerBiggestUserWinnerEsports() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                const result = await AppRepository.biggestBetUserWinnersEsports(app._id);
+                await AppRepository.insertBiggestBetUserWinnersEsports(app._id, result);
+                resolve(true);
+            }, "registerBiggestUserWinnerEsports");
+        });
+    }
 }
 
 const AppLogic = new App({
-    registerBiggestBetWinner    : false,
-    registerBiggestUserWinner   : false,
-    registerLastBet             : false,
-    registerPopularNumber       : false
+    registerBiggestBetWinner         : false,
+    registerBiggestBetWinnerEsports  : false,
+    registerBiggestUserWinner        : false,
+    registerBiggestUserWinnerEsports : false,
+    registerLastBet                  : false,
+    registerLastBetsEsports          : false,
+    registerPopularNumber            : false
 });
 
 export {
