@@ -6,10 +6,24 @@ class App extends Logic {
         super(queue);
     }
 
+    async registerPopularNumber() {
+        return new Promise(async (resolve, reject)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                try {
+                    const result = await AppRepository.popularNumber(app._id);
+                    await AppRepository.insertPopularNumber(app._id, result);
+                    resolve(true);
+                }catch(err){
+                    reject(err);
+                }
+            }, "registerPopularNumber");
+        });
+    }
+
     async registerLastBet() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const result = await AppRepository.lastsBets(app._id.toString(), null);
+                const result = await AppRepository.lastsBets(app._id.toString());
                 await AppRepository.insertLastsBets(app._id.toString(), result);
 
                 for(let game of app.games){
@@ -49,7 +63,8 @@ class App extends Logic {
 const AppLogic = new App({
     registerBiggestBetWinner    : false,
     registerBiggestUserWinner   : false,
-    buildLogicRegisterPerSkip   : false
+    registerLastBet             : false,
+    registerPopularNumber       : false
 });
 
 export {
