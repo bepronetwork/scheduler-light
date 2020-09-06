@@ -1,5 +1,7 @@
 import Logic from "./logic";
 import {AppRepository} from "../repos/app";
+import { CurrencySchema } from "../schemas/currency";
+import { fromPeriodicityToDates } from "./utils/date_settings";
 class App extends Logic {
 
     constructor(queue) {
@@ -58,13 +60,54 @@ class App extends Logic {
             }, "registerBiggestUserWinner");
         });
     }
+
+    async registerUserStats() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                let currencies = await CurrencySchema.prototype.model.find();
+                let periods = [
+                    "daily",
+                    "weekly"
+                ];
+                for(let currency of currencies) {
+                    for(let period of periods) {
+                        const result = await AppRepository.userStats(app._id, currency._id, fromPeriodicityToDates({periodicity: period}) );
+                        await AppRepository.insertUserStats(app._id, new String(currency._id).toString(), period, result);
+                    }
+                }
+                resolve(true);
+            }, "registerUserStats");
+        });
+    }
+
+    async registerGameStats() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                let currencies = await CurrencySchema.prototype.model.find();
+                let periods = [
+                    "daily",
+                    "weekly"
+                ];
+                for(let currency of currencies) {
+                    for(let period of periods) {
+                        const result = await AppRepository.gameStats(app._id, currency._id, fromPeriodicityToDates({periodicity: period}) );
+                        await AppRepository.insertGameStats(app._id, new String(currency._id).toString(), period, result);
+                    }
+                }
+                resolve(true);
+            }, "registerGameStats");
+        });
+    }
+
 }
 
 const AppLogic = new App({
     registerBiggestBetWinner    : false,
     registerBiggestUserWinner   : false,
     registerLastBet             : false,
-    registerPopularNumber       : false
+    registerPopularNumber       : false,
+    registerUserStats           : false,
+    registerGameStats           : false
 });
 
 export {
