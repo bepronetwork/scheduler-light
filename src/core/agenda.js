@@ -21,7 +21,9 @@ class AgendaCore {
                 AppLogic.registerLastBet(),
                 AppLogic.registerBiggestBetWinner(),
                 AppLogic.registerBiggestUserWinner(),
-                AppLogic.registerPopularNumber()
+                AppLogic.registerPopularNumber(),
+                AppLogic.registerUserStats(),
+                AppLogic.registerGameStats()
             ]);
         }, 1000 * 60 * time);
     }
