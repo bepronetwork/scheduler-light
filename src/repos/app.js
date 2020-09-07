@@ -90,9 +90,9 @@ class App {
                         timestamp  : new Date(),
                         currency   : currency,
                         period     : period,
-                        month      : !data.date ? 0: data.date.month,
-                        year       : !data.date ? 0: data.date.year,
-                        gameStats  : !data.games? [] : data.games
+                        month      : !data ? 0: data.date.month,
+                        year       : !data ? 0: data.date.year,
+                        gameStats  : !data? [] : data.games
                     }
                 },
                 { upsert: true, new: true, setDefaultsOnInsert: true }
