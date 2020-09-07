@@ -79,6 +79,7 @@ class App {
     }
 
     insertGameStats(_id, currency, period, data) {
+        data = data[0];
         return new Promise( (resolve, reject) => {
             //To Do
             GameStatsSchema.prototype.model
