@@ -4,22 +4,22 @@ const fromPeriodicityToDates = ({periodicity='weekly'}) =>{
     switch(new String(periodicity).toLowerCase().trim()){
         case 'daily' : {
             ret = {
-                from : getLastDaily(),
-                to : new Date() // Today
+                from_date : getLastDaily(),
+                to_date : new Date() // Today
             };
             break;
         };
         case 'weekly' : {
             ret = {
-                from : getLastWeek(),
-                to : new Date() // Today
+                from_date : getLastWeek(),
+                to_date : new Date() // Today
             };
             break;
         };
         case 'monthly' : {
             ret = {
-                from : getLastMonth(),
-                to : new Date() // Today
+                from_date : getLastMonth(),
+                to_date : new Date() // Today
             };
             break;
         };
