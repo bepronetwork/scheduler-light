@@ -2,12 +2,11 @@ import { AppLogic } from '../logic/app';
 
 const Agenda = require('agenda');
 require('dotenv').config();
-const mongoConnection               = process.env.MONGO_URL;
 const time                          = process.env.TIME;
-const mongoConnectionDatabaseRedis  = process.env.REDIS;
+const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 const agenda = new Agenda({
     db: {
-        address: mongoConnection + mongoConnectionDatabaseRedis,
+        address: `${MONGO_CONNECTION_STRING}/redis?ssl=true&authSource=admin&retryWrites=true&w=majority`,
         options: {
             useNewUrlParser: true, useUnifiedTopology: true
         },
@@ -22,7 +21,9 @@ class AgendaCore {
                 AppLogic.registerLastBet(),
                 AppLogic.registerBiggestBetWinner(),
                 AppLogic.registerBiggestUserWinner(),
-                AppLogic.registerPopularNumber()
+                AppLogic.registerPopularNumber(),
+                AppLogic.registerUserStats(),
+                AppLogic.registerGameStats()
             ]);
         }, 1000 * 60 * time);
     }
