@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node --inspect --expose-gc --optimize_for_size --max_old_space_size=460 app --expose-gc --nopresets es2015,stage-2"
+    "start" : "node build/app", 
+    "dev": "babel-node --inspect app --nopresets es2015,stage-2", 
+    "pm2": "pm2-runtime start ./app.js --interpreter ./node_modules/babel-cli/bin/babel-node.js", 
+    "build": "babel src --out-dir lib --copy-files -d build "
   },
   "author": "",
   "license": "ISC",
