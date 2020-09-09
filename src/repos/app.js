@@ -58,7 +58,7 @@ class App {
 
     biggestBetUserWinners(_id) {
         return new Promise( (resolve, reject) => {
-            AppSchema.prototype.model
+            BetSchema.prototype.model
             .aggregate(pipeline_biggest_user_winners(_id, { offset: 0, size: 200}))
             .exec( (err, item) => {
                 if(err) { reject(err)}
@@ -69,7 +69,7 @@ class App {
 
     biggestBetWinners(_id, game) {
         return new Promise( (resolve, reject) => {
-            AppSchema.prototype.model
+            BetSchema.prototype.model
             .aggregate(pipeline_biggest_bet_winners(_id, game, { offset: 0, size: 200}))
             .exec( (err, item) => {
                 if(err) { reject(err)}

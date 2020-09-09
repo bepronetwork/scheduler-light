@@ -79,9 +79,23 @@ const pipeline_last_bets = (_id, game, { offset, size }) =>
           '$currency', 0
         ]
       },
-      'bet': '$bet',
-      'user': '$user',
-      'game': '$game'
+      'bet': {
+        '_id' : '$bet._id',
+        'betAmount' : '$bet.betAmount',
+        'winAmount' : '$bet.winAmount',
+        'isWon' : '$bet.isWon',
+        'timestamp' : '$bet.timestamp',
+      },
+      'user': {
+        '_id': '$user._id',
+        'username': '$user.username',
+      },
+      'game': {
+        '_id': '$game._id',
+        'name': '$game.name',
+        'metaName': '$game.metaName',
+        'image_url': '$game.image_url',
+      }
     }
   }
 ];
