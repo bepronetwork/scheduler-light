@@ -4,125 +4,48 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
 [
   {
     '$match': {
-      '_id': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
-    }
-  }, {
-    '$lookup': {
-      'from': 'games', 
-      'localField': 'games', 
-      'foreignField': '_id', 
-      'as': 'games'
-    }
-  }, {
-    '$project': {
-      'games.bets': true, 
-      '_id': false
-    }
-  }, {
-    '$unwind': {
-      'path': '$games'
-    }
-  }, {
-    '$project': {
-      'bets': '$games.bets'
-    }
-  }, {
-    '$unwind': {
-      'path': '$bets'
-    }
-  }, {
-    '$lookup': {
-      'from': 'bets', 
-      'localField': 'bets', 
-      'foreignField': '_id', 
-      'as': 'bet'
-    }
-  }, {
-    '$project': {
-      'bet': {
-        '$arrayElemAt': [
-          '$bet', 0
-        ]
-      }
+      'app': typeof _id == 'string' ? mongoose.Types.ObjectId(_id) : _id
     }
   }, {
     '$match': {
-      'bet.isJackpot': false
-    }
-  }, {
-    '$lookup': {
-      'from': 'users', 
-      'localField': 'bet.user', 
-      'foreignField': '_id', 
-      'as': 'bet.user'
-    }
-  }, {
-    '$lookup': {
-      'from': 'games', 
-      'localField': 'bet.game', 
-      'foreignField': '_id', 
-      'as': 'bet.game'
-    }
-  }, {
-    '$project': {
-      'bet': true, 
-      'user': {
-        '$arrayElemAt': [
-          '$bet.user', 0
-        ]
-      }, 
-      'game': {
-        '$arrayElemAt': [
-          '$bet.game', 0
-        ]
-      }
-    }
-  }, {
-    '$project': {
-      '_id': '$bet._id', 
-      'betAmount': '$bet.betAmount', 
-      'currency': '$bet.currency', 
-      'timestamp': '$bet.timestamp', 
-      'isWon': '$bet.isWon', 
-      'winAmount': '$bet.winAmount', 
-      'user': '$user._id', 
-      'game': '$game._id'
+      'isJackpot': false
     }
   }, {
     '$group': {
-      '_id': '$user', 
+      '_id': {
+        'user': '$user',
+        'game': '$game',
+        'currency': '$currency'
+      },
       'winAmount': {
         '$sum': '$winAmount'
-      }, 
-      'currency': {
-        '$first': '$currency'
-      }, 
-      'game': {
-        '$first': '$game'
-      }, 
-      'user': {
-        '$first': '$user'
       }
     }
   }, {
-    '$lookup': {
-      'from': 'currencies', 
-      'localField': 'currency', 
-      'foreignField': '_id', 
-      'as': 'currency'
+    '$sort': {
+      'winAmount': -1
     }
   }, {
+    '$limit': size
+  }, {
     '$lookup': {
-      'from': 'games', 
-      'localField': 'game', 
-      'foreignField': '_id', 
+      'from': 'games',
+      'localField': '_id.game',
+      'foreignField': '_id',
       'as': 'game'
     }
   }, {
     '$lookup': {
-      'from': 'users', 
-      'localField': 'user', 
-      'foreignField': '_id', 
+      'from': 'currencies',
+      'localField': '_id.currency',
+      'foreignField': '_id',
+      'as': 'currency'
+    }
+  }, {
+    '$lookup': {
+      'from': 'users',
+      'localField': '_id.user',
+      'foreignField': '_id',
       'as': 'user'
     }
   }, {
@@ -131,27 +54,40 @@ const pipeline_biggest_user_winners = (_id, { offset, size }) =>
         '$arrayElemAt': [
           '$game', 0
         ]
-      }, 
+      },
       'user': {
         '$arrayElemAt': [
           '$user', 0
         ]
-      }, 
+      },
       'currency': {
         '$arrayElemAt': [
           '$currency', 0
         ]
-      }, 
+      },
+      'winAmount': '$winAmount',
+      '_id': false
+    }
+  }, {
+    '$project': {
+      'game': {
+        '_id': '$game._id',
+        'name': '$game.name',
+        'metaName': '$game.metaName',
+        'image_url': '$game.image_url'
+      },
+      'currency': {
+        '_id': '$currency._id',
+        'name': '$currency.name',
+        'ticker': '$currency.ticker',
+        'image': '$currency.image'
+      },
+      'user': {
+        '_id': '$user._id',
+        'username': '$user.username'
+      },
       'winAmount': '$winAmount'
     }
-  },
-  {
-    '$sort': {
-      'winAmount': -1
-    }
-  },
-  {
-      '$limit': size
   }
 ]
 
