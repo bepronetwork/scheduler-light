@@ -1,18 +1,48 @@
 import { AppSchema } from "../schemas/app";
+
 import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_balance} from "./pipeline"
+
+import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_game_stats, pipeline_user_stats} from "./pipeline"
+
 import { LastBetsSchema } from "../schemas/lastBets";
 import { BiggestUserWinnerSchema } from "../schemas/biggestUserWinner";
 import { BiggestBetWinnerSchema } from "../schemas/biggestBetWinners";
 import { BetSchema } from "../schemas/bet";
 import { PopularNumberSchema } from "../schemas/popularNumbers";
-import { BalanceWeekSchema } from "../schemas/balanceWeek";
 
+import { UserStatsSchema } from "../schemas/userStats";
+import { GameStatsSchema } from "../schemas/gameStats";
+
+import { BalanceWeekSchema } from "../schemas/balanceWeek";
 
 class App {
     getBalance(_id) {
         return new Promise( (resolve, reject) => {
             AppSchema.prototype.model
             .aggregate(pipeline_balance(_id))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
+
+    gameStats(_id, currency, date) {
+        return new Promise( (resolve, reject) => {
+            BetSchema.prototype.model
+            .aggregate(pipeline_game_stats(_id, currency, date))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
+    userStats(_id, currency, date) {
+        return new Promise( (resolve, reject) => {
+            BetSchema.prototype.model
+            .aggregate(pipeline_user_stats(_id, currency, date))
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);
@@ -44,7 +74,7 @@ class App {
 
     biggestBetUserWinners(_id) {
         return new Promise( (resolve, reject) => {
-            AppSchema.prototype.model
+            BetSchema.prototype.model
             .aggregate(pipeline_biggest_user_winners(_id, { offset: 0, size: 200}))
             .exec( (err, item) => {
                 if(err) { reject(err)}
@@ -55,8 +85,57 @@ class App {
 
     biggestBetWinners(_id, game) {
         return new Promise( (resolve, reject) => {
-            AppSchema.prototype.model
+            BetSchema.prototype.model
             .aggregate(pipeline_biggest_bet_winners(_id, game, { offset: 0, size: 200}))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
+    insertGameStats(_id, currency, period, data) {
+        data = data[0];
+        return new Promise( (resolve, reject) => {
+            //To Do
+            GameStatsSchema.prototype.model
+            .findOneAndUpdate({app: _id, currency, period },
+                {
+                    $set: {
+                        app        : _id,
+                        timestamp  : new Date(),
+                        currency   : currency,
+                        period     : period,
+                        month      : !data ? 0: data.date.month,
+                        year       : !data ? 0: data.date.year,
+                        gameStats  : !data? [] : data.games
+                    }
+                },
+                { upsert: true, new: true, setDefaultsOnInsert: true }
+            )
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
+
+    insertUserStats(_id, currency, period, data) {
+        return new Promise( (resolve, reject) => {
+            //To Do
+            UserStatsSchema.prototype.model
+            .findOneAndUpdate({app: _id, currency, period },
+                {
+                    $set: {
+                        app        : _id,
+                        timestamp  : new Date(),
+                        currency   : currency,
+                        period     : period,
+                        userStats  : data
+                    }
+                },
+                { upsert: true, new: true, setDefaultsOnInsert: true }
+            )
             .exec( (err, item) => {
                 if(err) { reject(err)}
                 resolve(item);

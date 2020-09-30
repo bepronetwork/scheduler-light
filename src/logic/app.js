@@ -2,6 +2,8 @@ import Logic from "./logic";
 import {AppRepository} from "../repos/app";
 import GoogleStorageSingleton from './third-parties/googleStorage';
 import {nameCurrentDate} from './utils/string';
+import { CurrencySchema } from "../schemas/currency";
+import { fromPeriodicityToDates } from "./utils/date_settings";
 class App extends Logic {
 
     constructor(queue) {
@@ -81,11 +83,51 @@ class App extends Logic {
                 });
                 if(result.length > 0) {
                     const link = await GoogleStorageSingleton.uploadFile({bucketName : 'balances-clients', file : result, name : `${app.name}-${nameCurrentDate()}-balances`});
+                    console.log(link);
                 }
             }, "generateBalance");
             resolve(true);
         });
     }
+
+    async registerUserStats() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                let currencies = await CurrencySchema.prototype.model.find();
+                let periods = [
+                    "daily",
+                    "weekly"
+                ];
+                for(let currency of currencies) {
+                    for(let period of periods) {
+                        const result = await AppRepository.userStats(app._id, currency._id, fromPeriodicityToDates({periodicity: period}) );
+                        await AppRepository.insertUserStats(app._id, new String(currency._id).toString(), period, result);
+                    }
+                }
+                resolve(true);
+            }, "registerUserStats");
+        });
+    }
+
+    async registerGameStats() {
+        return new Promise(async (resolve)=>{
+            await this.buildLogicRegisterPerSkip(async (app)=>{
+                let currencies = await CurrencySchema.prototype.model.find();
+                let periods = [
+                    "daily",
+                    "weekly"
+                ];
+                for(let currency of currencies) {
+                    for(let period of periods) {
+                        const result = await AppRepository.gameStats(app._id, currency._id, fromPeriodicityToDates({periodicity: period}) );
+                        await AppRepository.insertGameStats(app._id, new String(currency._id).toString(), period, result);
+                    }
+                }
+                resolve(true);
+            }, "registerGameStats");
+        });
+    }
+
 }
 
 const AppLogic = new App({
@@ -93,7 +135,9 @@ const AppLogic = new App({
     'registerBiggestUserWinner'   : false,
     'registerLastBet'             : false,
     'registerPopularNumber'       : false,
-    'generateBalance'             : false
+    'generateBalance'             : false,
+    'registerUserStats'           : false,
+    'registerGameStats'           : false
 });
 
 export {

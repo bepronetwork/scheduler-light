@@ -1,20 +1,18 @@
 import {Mongoose} from 'mongoose';
 require('dotenv').config();
-const mongoConnectionString = process.env.MONGO_URL;
-const mongoConnectionDatabaseRedis = process.env.REDIS;
-const mongoConnectionDatabaseMain = process.env.MAIN;
+const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 
 class database {
     async start() {
         this.connectRedis = new Mongoose();
         this.connectRedis.set('useFindAndModify', false);
-        await this.connectRedis.connect(mongoConnectionString + mongoConnectionDatabaseRedis, {
+        await this.connectRedis.connect(`${MONGO_CONNECTION_STRING}/redis?ssl=true&authSource=admin&retryWrites=true&w=majority`, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
         this.connectMain = new Mongoose();
         this.connectMain.set('useFindAndModify', false);
-        await this.connectMain.connect(mongoConnectionString + mongoConnectionDatabaseMain, {
+        await this.connectMain.connect(`${MONGO_CONNECTION_STRING}/main?ssl=true&authSource=admin&retryWrites=true&w=majority`, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
