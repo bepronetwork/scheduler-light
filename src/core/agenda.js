@@ -28,10 +28,6 @@ class AgendaCore {
             ]);
         }, 1000 * 60 * time);
 
-        AppLogic.generateBalance().then(async ()=>{
-            // await agenda.schedule('sunday at 1:00am', 'sunday');
-        });
-
         agenda.define('sunday', async job => {
             AppLogic.generateBalance().then(async ()=>{
                 await agenda.schedule('sunday at 1:00am', 'sunday');

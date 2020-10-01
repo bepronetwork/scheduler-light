@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/app",
-    "dev": "babel-node --inspect app --nopresets es2015,stage-2",
+    "dev": "babel-node --inspect src/app --nopresets es2015,stage-2",
     "pm2": "pm2-runtime start ./app.js --interpreter ./node_modules/babel-cli/bin/babel-node.js",
     "build": "babel src --out-dir lib --copy-files -d build "
   },

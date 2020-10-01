@@ -1,8 +1,6 @@
 import { AppSchema } from "../schemas/app";
 
-import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_balance} from "./pipeline"
-
-import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_game_stats, pipeline_user_stats} from "./pipeline"
+import {pipeline_biggest_bet_winners, pipeline_balance, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_game_stats, pipeline_user_stats} from "./pipeline"
 
 import { LastBetsSchema } from "../schemas/lastBets";
 import { BiggestUserWinnerSchema } from "../schemas/biggestUserWinner";

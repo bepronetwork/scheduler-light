@@ -50,7 +50,7 @@ class GoogleStorage{
                 await this.storage.bucket(bucketName).upload(`${path}${fileNameCRYPTO}`, {
                     gzip: true,
                     metadata: {
-                    cacheControl: 'public, max-age=31536000',
+                    cacheControl: 'no-cache',
                     },
                 });
 
