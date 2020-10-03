@@ -23,6 +23,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "base64-stream": "^1.0.0",
+    "crypto": "^1.0.1",
     "csv-stringify": "^5.5.0",
     "dotenv": "^8.2.0",
     "expose-gc": "^1.0.0",

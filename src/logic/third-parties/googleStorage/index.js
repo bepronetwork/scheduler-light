@@ -19,14 +19,14 @@ class GoogleStorage{
 
     _streamCSVToCryptoAsync = (fileNameCSV, fileNameCRYPTO, path = 'balance/')=>{
         return new Promise((resolve)=>{
-            const read   = fs.createReadStream(`${path}${fileNameCSV}`);
-            const write  = fs.createWriteStream(`${path}${fileNameCRYPTO}`);
-            const cipher = crypto.createCipher('aes192', process.env.PASSWORD_CRYPTO);
-            read
-            .pipe(cipher)
-            .pipe(new Base64Encode())
-            .pipe(write)
-            .on('finish', resolve);
+            const key = crypto.scryptSync(process.env.PASSWORD_CRYPTO, 'salt', 24);
+            const iv = Buffer.alloc(16, 0);
+            const cipher = crypto.createCipheriv('aes-192-cbc', key, iv);
+            const input = fs.createReadStream(`${path}${fileNameCSV}`);
+            const output = fs.createWriteStream(`${path}${fileNameCRYPTO}`);
+            input.pipe(cipher)
+                 .pipe(output)
+                 .on('finish', resolve);
         });
     }
 

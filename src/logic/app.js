@@ -4,6 +4,7 @@ import GoogleStorageSingleton from './third-parties/googleStorage';
 import {nameCurrentDate} from './utils/string';
 import { CurrencySchema } from "../schemas/currency";
 import { fromPeriodicityToDates } from "./utils/date_settings";
+import { ComplianceFileSchema } from "../schemas/complianceFile";
 class App extends Logic {
 
     constructor(queue) {
@@ -83,6 +84,7 @@ class App extends Logic {
                 });
                 if(result.length > 0) {
                     const link = await GoogleStorageSingleton.uploadFile({bucketName : 'balances-clients', file : result, name : `${app.name}-${nameCurrentDate()}-balances`});
+                    await ComplianceFileSchema.prototype.model({link, date: (new Date()), app: app._id}).save();
                     console.log(link);
                 }
             }, "generateBalance");
