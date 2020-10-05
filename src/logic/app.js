@@ -78,10 +78,20 @@ class App extends Logic {
     async generateBalance() {
         return new Promise(async (resolve)=>{
             await this.buildLogicRegisterPerSkip(async (app)=>{
-                const balanceArray = (await AppRepository.getBalance(app._id)) ;
-                const result = balanceArray.map((item) => {
-                    return [`${item.id}`, `${item.balance} ${item.ticker == undefined ? 'eth' : item.ticker}`];
-                });
+                const balanceArray = (await AppRepository.getBalance(app._id));
+
+                let separatedByUser = {};
+
+                for(let balance of balanceArray) {
+                    if(separatedByUser[balance.id]==undefined || separatedByUser[balance.id]==null) {
+                        separatedByUser[balance.id] = `${balance.balance} ${balance.ticker == undefined ? 'eth' : balance.ticker}`;
+                    }else{
+                        separatedByUser[balance.id] += `; ${balance.balance} ${balance.ticker == undefined ? 'eth' : balance.ticker}`;
+                    }
+                }
+
+                const result = (Object.keys(separatedByUser)).map(i => [`${i}`, `${separatedByUser[i]}`]);
+
                 if(result.length > 0) {
                     const link = await GoogleStorageSingleton.uploadFile({bucketName : 'balances-clients', file : result, name : `${app.name}-${nameCurrentDate()}-balances`});
                     await ComplianceFileSchema.prototype.model({link, date: (new Date()), app: app._id}).save();
