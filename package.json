@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.18.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node build/app", 
-    "dev": "babel-node --inspect app --nopresets es2015,stage-2", 
-    "pm2": "pm2-runtime start ./app.js --interpreter ./node_modules/babel-cli/bin/babel-node.js", 
+    "start": "node build/app",
+    "dev": "babel-node --inspect src/app --nopresets es2015,stage-2",
+    "pm2": "pm2-runtime start ./app.js --interpreter ./node_modules/babel-cli/bin/babel-node.js",
     "build": "babel src --out-dir lib --copy-files -d build "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^5.0.1",
     "agenda": "^3.1.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-inline-dotenv": "^1.3.3",
@@ -21,6 +25,9 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "base64-stream": "^1.0.0",
+    "crypto": "^1.0.1",
+    "csv-stringify": "^5.5.0",
     "dotenv": "^8.2.0",
     "expose-gc": "^1.0.0",
     "express": "^4.17.1",

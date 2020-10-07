@@ -1,15 +1,29 @@
 import { AppSchema } from "../schemas/app";
-import {pipeline_biggest_bet_winners, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_game_stats, pipeline_user_stats} from "./pipeline"
+
+import {pipeline_biggest_bet_winners, pipeline_balance, pipeline_biggest_user_winners, pipeline_last_bets, pipeline_popular_numbers, pipeline_game_stats, pipeline_user_stats} from "./pipeline"
+
 import { LastBetsSchema } from "../schemas/lastBets";
 import { BiggestUserWinnerSchema } from "../schemas/biggestUserWinner";
 import { BiggestBetWinnerSchema } from "../schemas/biggestBetWinners";
 import { BetSchema } from "../schemas/bet";
 import { PopularNumberSchema } from "../schemas/popularNumbers";
+
 import { UserStatsSchema } from "../schemas/userStats";
 import { GameStatsSchema } from "../schemas/gameStats";
 
+import { BalanceWeekSchema } from "../schemas/balanceWeek";
 
 class App {
+    getBalance(_id) {
+        return new Promise( (resolve, reject) => {
+            AppSchema.prototype.model
+            .aggregate(pipeline_balance(_id))
+            .exec( (err, item) => {
+                if(err) { reject(err)}
+                resolve(item);
+            });
+        });
+    }
 
 
     gameStats(_id, currency, date) {

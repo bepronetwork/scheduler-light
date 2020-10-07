@@ -21,7 +21,7 @@ export default class Logic {
                         .find()
                         .skip(200*index)
                         .limit(200)
-                        .select("_id games");
+                        .select("_id games name");
             if(apps.length === 0){
                 break;
             }
